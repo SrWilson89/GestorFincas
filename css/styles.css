@@ -1,0 +1,86 @@
+body {
+  font-family: sans-serif;
+  background: #f2f2f2;
+  color: #333;
+  padding: 20px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.finca-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.finca-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 6px;
+  background: #fff;
+  width: calc(33.333% - 20px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 4px 0;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* MODO OSCURO */
+body.dark {
+  background: #1e1e1e;
+  color: #f0f0f0;
+}
+
+body.dark .container {
+  background: #2a2a2a;
+}
+
+body.dark .finca-card {
+  background: #3a3a3a;
+  border-color: #555;
+}
+.theme-toggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+.theme-toggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1000;
+}
+body.dark {
+  background: #121212;
+  color: #eeeeee;
+}
