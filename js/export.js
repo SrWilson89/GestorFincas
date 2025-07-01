@@ -38,3 +38,33 @@ async function exportFinca() {
   XLSX.utils.book_append_sheet(wb, ws, "Resumen");
   XLSX.writeFile(wb, `${finca.nombre}.xlsx`);
 }
+async function exportFinca() {
+  // ... (código existente)
+  
+  // ===== MEJORAS EN PDF =====
+  // Añadir logo
+  const logo = await loadImage('img/logo.png');
+  doc.addImage(logo, 'PNG', 10, 5, 30, 15);
+  
+  // Añadir resumen financiero
+  const totalIngresos = finca.ingresos.reduce((sum, i) => sum + i.monto, 0);
+  const totalGastos = finca.gastos.reduce((sum, g) => sum + g.monto, 0);
+  const balance = totalIngresos - totalGastos;
+  
+  doc.setFontSize(12).text(
+    `Resumen: Ingresos: €${totalIngresos.toFixed(2)} | Gastos: €${totalGastos.toFixed(2)} | Balance: €${balance.toFixed(2)}`,
+    10,
+    40
+  );
+  
+  // ... (resto del código)
+  
+  // ===== MEJORAS EN EXCEL =====
+  // Añadir fila de totales
+  ws_data.push([]);
+  ws_data.push(['TOTAL INGRESOS', '', '', totalIngresos]);
+  ws_data.push(['TOTAL GASTOS', '', '', totalGastos]);
+  ws_data.push(['BALANCE', '', '', balance]);
+  
+  // ... (resto del código)
+}

@@ -143,3 +143,97 @@ function borrarIngreso(id) {
   updateFinca(finca);
   location.reload();
 }
+// ... (código existente)
+
+// ===== GASTOS =====
+async function añadirGasto() {
+  const finca = getFincaById(fincaId);
+  const { value: formValues } = await Swal.fire({
+    title: 'Nuevo Gasto',
+    html: `
+      <input id="tipo" class="swal2-input" placeholder="Tipo">
+      <input id="descripcion" class="swal2-input" placeholder="Descripción">
+      <input id="monto" type="number" class="swal2-input" placeholder="Monto (€)" step="0.01">
+      <input id="fecha" type="date" class="swal2-input" value="${new Date().toISOString().split('T')[0]}">
+    `,
+    focusConfirm: false,
+    preConfirm: () => {
+      return {
+        tipo: document.getElementById('tipo').value,
+        descripcion: document.getElementById('descripcion').value,
+        monto: parseFloat(document.getElementById('monto').value),
+        fecha: document.getElementById('fecha').value
+      }
+    }
+  });
+
+  if (formValues) {
+    finca.gastos.push({ 
+      id: Date.now(), 
+      ...formValues 
+    });
+    updateFinca(finca);
+    renderGastos(finca);
+  }
+}
+
+async function editarGasto(gastoId) {
+  // ... (similar a añadirGasto pero con valores precargados)
+}
+
+function borrarGasto(gastoId) {
+  // ... (usar Swal.fire para confirmación)
+}
+
+// ===== CUENTAS =====
+async function añadirCuenta() {
+  // ... (similar a añadirGasto)
+}
+
+// ===== INGRESOS =====
+async function añadirIngreso() {
+  // ... (similar a añadirGasto)
+}
+
+// ===== FUNCIONES DE RENDERIZADO MEJORADAS =====
+function renderLista(elementId, items, fields, actions) {
+  const lista = document.getElementById(elementId);
+  lista.innerHTML = '';
+  
+  items.forEach(item => {
+    const li = document.createElement('li');
+    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+    
+    let content = '';
+    fields.forEach(field => {
+      content += `<span>${field.label}: ${item[field.key]}</span> `;
+    });
+    
+    li.innerHTML = `
+      <div>${content}</div>
+      <div>
+        ${actions.map(action => `
+          <button class="btn btn-sm ${action.class}" 
+                  onclick="${action.fn}(${item.id})">
+            ${action.icon}
+          </button>
+        `).join('')}
+      </div>
+    `;
+    lista.appendChild(li);
+  });
+}
+
+// Actualizar funciones de renderizado
+function renderGastos(finca) {
+  renderLista('listaGastos', finca.gastos, [
+    { key: 'fecha', label: 'Fecha' },
+    { key: 'tipo', label: 'Tipo' },
+    { key: 'monto', label: 'Monto' }
+  ], [
+    { icon: '✏️', class: 'btn-outline-warning', fn: 'editarGasto' },
+    { icon: '🗑️', class: 'btn-outline-danger', fn: 'borrarGasto' }
+  ]);
+}
+
+// ... (similar para cuentas e ingresos)

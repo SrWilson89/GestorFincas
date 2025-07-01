@@ -32,3 +32,25 @@ self.addEventListener('fetch', e => {
     caches.match(e.request).then(r => r || fetch(e.request))
   );
 });
+// Añadir más recursos a cache
+const urlsToCache = [
+  // ... (recursos existentes)
+  '/img/logo.png',
+  '/img/icons/icon-192.png',
+  '/img/icons/icon-512.png',
+  '/fonts/font.woff2'
+];
+
+// Estrategia Cache First con actualización
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    caches.match(e.request).then(cacheRes => {
+      return cacheRes || fetch(e.request).then(networkRes => {
+        return caches.open(CACHE_NAME).then(cache => {
+          cache.put(e.request, networkRes.clone());
+          return networkRes;
+        });
+      });
+    })
+  );
+});
